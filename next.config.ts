@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 import withTM from 'next-transpile-modules';
 
-// 1️⃣ Import the plugin and pass the list of modules to transpile:
-const withTranspileModules = withTM(['expo-modules-core']);
+// ✅ 1️⃣ Add all the modules that need transpiling
+const withTranspileModules = withTM([
+  'expo-modules-core',
+  '@kinde/js-utils',
+  '@kinde-oss/kinde-typescript-sdk',
+  '@kinde-oss/kinde-auth-nextjs',
+]);
 
 const nextConfig = {
   typescript: {
@@ -44,5 +49,5 @@ const nextConfig = {
   },
 };
 
-// 2️⃣ Wrap your config:
+// ✅ 2️⃣ Wrap your config:
 export default withTranspileModules(nextConfig);

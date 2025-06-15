@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
-import { NextConfig } from 'next';
+import withTM from 'next-transpile-modules';
 
-const nextConfig: NextConfig = {
+// 1️⃣ Import the plugin and pass the list of modules to transpile:
+const withTranspileModules = withTM(['expo-modules-core']);
+
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
@@ -31,14 +34,15 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.i-scmp.com',
         port: '',
         pathname: '/**',
-      }
-    ]
+      },
+    ],
   },
   experimental: {
     serverActions: {
-      bodySizeLimit: '2mb'
-    }
-  }
+      bodySizeLimit: '2mb',
+    },
+  },
 };
 
-export default nextConfig;
+// 2️⃣ Wrap your config:
+export default withTranspileModules(nextConfig);

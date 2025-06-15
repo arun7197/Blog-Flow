@@ -24,7 +24,6 @@ async function getData(){
   return data;
 }
 export default async function Home() {
-  const data = await getData();
   return (
     <div className="py-6">
       <h1 className="text-2xl font-semibold tracking-tight mb-8">Latest posts</h1>

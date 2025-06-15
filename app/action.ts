@@ -31,35 +31,40 @@ export async function handleSubmission(formData: FormData){
 }
 
 export async function deletePost(id: string) {
-    try {
-      await prisma.posts.delete({
-        where: { id },
-      });
-      return { success: true };
-    } catch (error) {
-      return { success: false };
-    }
+  try {
+    await prisma.posts.delete({
+      where: { id },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Delete post error:', error);
+    return { 
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to delete post'
+    };
   }
+}
 
-  export async function updatePost(id: string,data: FormData){
-    try {
-      const title = data.get("title");
-      const content = data.get("content");
-      const url = data.get("url");
+export async function updatePost(id: string, data: FormData) {
+  try {
+    const title = data.get("title");
+    const content = data.get("content");
+    const url = data.get("url");
 
-      await prisma.posts.update({
-        where: {id},
-        data: {
-          title: title as string,
-          content: content as string,
-          imageUrl: url as string,
-        },
-      })
-      return {success: true};
-    }catch (error) {
-      return {success: false};
-    }
-    
-    
-
+    await prisma.posts.update({
+      where: {id},
+      data: {
+        title: title as string,
+        content: content as string,
+        imageUrl: url as string,
+      },
+    })
+    return {success: true};
+  } catch (error) {
+    console.error('Update post error:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to update post'
+    };
   }
+}

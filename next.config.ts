@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
+import { NextConfig } from 'next';
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   typescript: {
-    // ✅ Ignore TypeScript errors during build (not recommended for production!)
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
   eslint: {
-    // ✅ Ignore ESLint errors during build
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
   },
   images: {
     remotePatterns: [
@@ -32,9 +31,14 @@ const nextConfig = {
         hostname: 'cdn.i-scmp.com',
         port: '',
         pathname: '/**',
-      },
-    ],
+      }
+    ]
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb'
+    }
+  }
 };
 
-module.exports = nextConfig;
+export default nextConfig;

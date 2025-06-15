@@ -1,12 +1,12 @@
 "use server";
 
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { getServerSession } from "next-auth/next";
 import { prisma } from "./utils/db";
 import { redirect } from "next/navigation";
 
-export async function handleSubmission(formData: FormData){
-    const {getUser} = getKindeServerSession();
-    const user = await getUser();
+export async function handleSubmission(formData: FormData) {
+    const session = await getServerSession();
+    const user = session?.user;
 
     if (!user) {
         throw new Error("User not authenticated");
@@ -20,12 +20,11 @@ export async function handleSubmission(formData: FormData){
             title: title as string,
             content: content as string,
             imageUrl: url as string,
-            authorId: user.id as string,
-            authorImageUrl: user?.picture as string,
-            authorName: user?.given_name as string,
+            authorId: (user as any).id as string,
+            authorImageUrl: user?.image as string,
+            authorName: user?.name as string,
         }
     })
-
 
     return redirect("/dashboard")
 }

@@ -61,8 +61,8 @@ export default async function IdPage({ params }: { params: Params }) {
             </div>
             <div className="relative h-[400px] w-full mb-8 overflow-hidden rounded-lg">
                 <img
-                    src={data.authorImageUrl}
-                    alt={data.authorImageUrl}
+                    src={data.imageUrl}
+                    alt={data.imageUrl}
                     className="object-cover w-full h-full"
                 />
             </div>

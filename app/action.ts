@@ -1,32 +1,37 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "./utils/db";
 import { redirect } from "next/navigation";
 
 export async function handleSubmission(formData: FormData) {
-    const session = await getServerSession();
-    const user = session?.user;
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
 
     if (!user) {
-        throw new Error("User not authenticated");
+        redirect('/api/auth/login');
     }
 
-    const title = formData.get("title")
-    const content = formData.get("content")
-    const url = formData.get("url")
-    await prisma.posts.create({
-        data: {
-            title: title as string,
-            content: content as string,
-            imageUrl: url as string,
-            authorId: (user as any).id as string,
-            authorImageUrl: user?.image as string,
-            authorName: user?.name as string,
-        }
-    })
+    try {
+        const title = formData.get("title")
+        const content = formData.get("content")
+        const url = formData.get("url")
+        await prisma.posts.create({
+            data: {
+                title: title as string,
+                content: content as string,
+                imageUrl: url as string,
+                authorId: user.id as string,
+                authorImageUrl: user.picture as string,
+                authorName: user.given_name as string,
+            }
+        })
 
-    return redirect("/dashboard")
+        return redirect("/dashboard")
+    } catch (error) {
+        console.error('Create post error:', error);
+        throw new Error('Failed to create post');
+    }
 }
 
 export async function deletePost(id: string) {

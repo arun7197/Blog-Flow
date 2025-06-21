@@ -12,10 +12,11 @@ export async function handleSubmission(formData: FormData) {
         redirect('/api/auth/login');
     }
 
+    const title = formData.get("title")
+    const content = formData.get("content")
+    const url = formData.get("url")
+    
     try {
-        const title = formData.get("title")
-        const content = formData.get("content")
-        const url = formData.get("url")
         await prisma.posts.create({
             data: {
                 title: title as string,
@@ -26,12 +27,12 @@ export async function handleSubmission(formData: FormData) {
                 authorName: user.given_name as string,
             }
         })
-
-        return redirect("/dashboard")
     } catch (error) {
         console.error('Create post error:', error);
         throw new Error('Failed to create post');
     }
+
+    redirect("/dashboard")
 }
 
 export async function deletePost(id: string) {

@@ -24,7 +24,7 @@ export default function CreateBlogroute(){
                             <Textarea name="content" required placeholder="Content"/>
                         </div>
                         <div className="flex gap-2 flex-col">
-                            <Label>Imag URL</Label>
+                            <Label>Image URL</Label>
                             <Input name="url" required type="text" placeholder="Copy Image address"/>
                         </div>
                         <Submitbutton/>

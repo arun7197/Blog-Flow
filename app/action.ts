@@ -37,6 +37,26 @@ export async function handleSubmission(formData: FormData) {
 
 export async function deletePost(id: string) {
   try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    const post = await prisma.posts.findUnique({
+      where: { id },
+      select: { authorId: true }
+    });
+
+    if (!post) {
+      return { success: false, message: "Post not found" };
+    }
+
+    if (post.authorId !== user.id) {
+      return { success: false, message: "Not authorized" };
+    }
+
     await prisma.posts.delete({
       where: { id },
     });
@@ -52,6 +72,26 @@ export async function deletePost(id: string) {
 
 export async function updatePost(id: string, data: FormData) {
   try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    const post = await prisma.posts.findUnique({
+      where: { id },
+      select: { authorId: true }
+    });
+
+    if (!post) {
+      return { success: false, message: "Post not found" };
+    }
+
+    if (post.authorId !== user.id) {
+      return { success: false, message: "Not authorized" };
+    }
+
     const title = data.get("title");
     const content = data.get("content");
     const url = data.get("url");

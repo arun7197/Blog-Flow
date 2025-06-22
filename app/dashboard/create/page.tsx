@@ -25,7 +25,7 @@ export default function CreateBlogroute(){
                         </div>
                         <div className="flex gap-2 flex-col">
                             <Label>Imag URL</Label>
-                            <Input name="url" required type="text" placeholder="Image URL"/>
+                            <Input name="url" required type="text" placeholder="Copy Image address"/>
                         </div>
                         <Submitbutton/>
                     </form>
